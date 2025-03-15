@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Members</title>
+</head>
+<body>
+<h2>**You can add multiple user at once**</h2>
+<div class="box">
+    <div class="searchbox">
+        <form id="formsearch">
+            <label for="memberemail">
+                <input type="email" id="memberemail" placeholder="Search Member by Email">
+                <button id="search" type="button">Search</button>
+                <ul class="memberstoshow" id="memberstoshow"></ul>
+                <button id="done-btn" type="submit">Done</button>
+            </label>
+        </form>
+    </div>
+</div>
+
+<script>
+    const teamid = "<%= id %>";
+    const memberstoadd = [];
+
+    document.getElementById('search').addEventListener('click', async function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        const searchbox = document.getElementById('memberemail').value;
+        if (!searchbox) {
+            alert("Please enter an email to search.");
+            return;
+        }
+
+        console.log("Searching for:", searchbox);
+
+        try {
+            const response = await fetch('/logic/SearchToAdd', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ searchbox })
+            });
+
+            const data = await response.json();
+            console.log("Data received from backend:", data);
+
+            const result = document.getElementById('memberstoshow');
+            result.innerHTML = ''; // Clear previous search results
+
+            // ✅ Correct way to check if user exists
+            if (!data.user || Object.keys(data.user).length === 0) {
+                result.innerHTML = '<li>No members found</li>';
+                return;
+            }
+
+            // ✅ Ensure it's an array (if it's not, wrap it in an array)
+            const members = Array.isArray(data.user) ? data.user : [data.user];
+
+            members.forEach(member => {
+                const li = document.createElement('li');
+                li.dataset.id = member._id;
+                li.textContent = member.full_name; // ✅ Use `full_name` instead of `name`
+
+                // ✅ Toggle selection on click
+                li.addEventListener('click', function() {
+                    if (!memberstoadd.includes(member._id)) {
+                        memberstoadd.push(member._id);
+                        li.style.color = "green"; // Indicate selection
+                    } else {
+                        memberstoadd.splice(memberstoadd.indexOf(member._id), 1);
+                        li.style.color = "black"; // Indicate deselection
+                    }
+                });
+
+                result.appendChild(li);
+            });
+        } catch (error) {
+            console.error("Error fetching members:", error);
+            alert("An error occurred while searching for members.");
+        }
+    });
+
+
+    document.getElementById('done-btn').addEventListener('click', async function(event) {
+        event.preventDefault();
+
+        if (memberstoadd.length === 0) {
+            alert("No members selected.");
+            return;
+        }
+
+        try {
+            const response = await fetch('/logic/AddMembers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ memberstoadd ,  teamid })
+            });
+            const result = await response.json();
+            if (result.ok) {
+                alert("Members successfully added!");
+                document.getElementById('memberstoshow').innerHTML = '';// Clear list
+                document.getElementById('search').innerHTML = '';
+                window.location = '/logic/home'
+            } else {
+                alert("Failed to add members.");
+            }
+        } catch (error) {
+            console.error("Error adding members:", error);
+        }
+    });
+</script>
+</body>
+</html>

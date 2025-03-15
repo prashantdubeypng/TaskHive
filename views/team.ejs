@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <div class="card p-4">
+        <h2 class="text-center">Team Name: <span id="teamName"><%= TeamName %></span></h2>
+        <h5 class="text-center text-muted">Admin: <span id="adminName"><%=teamdata.Admin.full_name%></span></h5>
+        <a href="/testing/addmember/<%=teamdata._id%>">
+            <i class="fas fa-plus">New Member</i>
+        </a>
+        <button class="nav-button" id="assignwork">
+            <a href="/teasting/assigntask/<%=teamdata._id%>" >
+                <i class="fas fa-plus"></i> Assign Work
+            </a>
+        </button>
+        <button class="nav-button" id="delete" onclick="deleteTeam('<%=teamdata._id%>')">Delete Team</button>
+    </div>
+    <div class="row mt-4">
+        <!-- Members Section -->
+        <div class="col-md-6">
+            <div class="card p-3">
+                <h4>Team Members</h4>
+                <ul class="list-group" id="membersList">
+                    <% if (teamdata.members.length > 0) { %>
+                    debugger
+                        <% teamdata.members.forEach(function(member) { %>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="/team/<%= teamdata._id %>/<%= member._id %>"><%= member.full_name %></a>
+                                <button class="nav-button" onclick="removemember('<%=teamdata._id%>','<%=member._id%>' )">REMOVE</button>
+                            </li>
+                        <% }) %>
+                    <% } else { %>  <!-- ✅ Corrected Else Statement -->
+                    <li class="list-group-item text-muted text-center">ADD MEMBERS</li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+        <!-- Tasks Section -->
+        <div class="col-md-6">
+            <div class="card p-3">
+                <h4>Tasks</h4>
+                <ul class="list-group" id="tasksList">
+                    <% if (teamdata.tasks.length > 0) { %>
+                        <% teamdata.tasks.forEach(function(task) { %>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span><%= task.title %></span>
+                                <span class="status-badge bg-warning text-dark"><%= task.status %></span>
+                            </li>
+                        <% }) %>
+                    <% } else { %>  <!-- ✅ Corrected Else Statement -->
+                    <li class="list-group-item text-muted text-center">NO tasks assigned</li>
+                    <% } %>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    async function deleteTeam(teamid) {
+        try{
+            const response = await fetch(`/team/delete/${teamid}`,{
+                method: 'DELETE',
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            const data = await response.json()
+            if(data.ok){
+                window.location = '/logic/home'
+            }
+            if(data.error){
+                alert('Unauthorized')
+            }
+        }catch(error){
+            console.log(error)
+            alert(error.message)
+        }
+    }
+    async function removemember(teamid , memberid){
+       try{
+           console.log(teamid, memberid)
+           const response = await fetch(`/team/removemember/${teamid}/${memberid}`,{
+               method: 'DELETE',
+               headers:{
+                   'Content-Type':'application/json'
+               }
+           })
+           const data = await response.json()
+           if(data.ok){
+               window.location.reload()
+           }
+           if(data.error){
+               alert('Unauthorized')
+           }
+       }catch(error){
+           console.log(error)
+           alert('internal error')
+       }
+    }
+</script>
+</body>
+</html>

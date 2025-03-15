@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN PAGE </title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        .login-page {
+            width: 350px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form label {
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .form button:hover {
+            background: #564db0;
+        }
+        .new-user{
+            display: flex;
+            margin-left: 230px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <form class="login-form" id="login-form">
+            <label>LOGIN ID:
+                <input ID="email" type="text" name="email" placeholder="Email ID"/>
+            </label>
+            <label>LOGIN PASSWORD:
+                <input id="password" type="text" name="password" placeholder="password">
+            </label>
+            <button type="submit" id="submit">LOGIN</button>
+        </form>
+    </div>
+    <div class="new-user" id="new-user">
+       <a href="/user/res" role="button">NEW</a>
+    </div>
+</div>
+<script>
+    document.getElementById('login-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        try {
+            const response = await fetch('http://localhost:3000/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Required for JSON data
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+            if (data.redirect) {
+                window.location.href = data.redirect; // Client-side redirect
+            } else if (data.error) {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Login failed. Check credentials.');
+        }
+    });
+</script>
+</body>
+</html>

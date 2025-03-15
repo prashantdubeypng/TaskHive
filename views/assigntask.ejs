@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Task</title>
+</head>
+<body>
+<h1>Assign Task</h1>
+<div class="inputbox">
+    <div class="input">
+        <label for="title">Task</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="member">Assign to Member</label>
+        <select id="member" name="member">
+            <option value="">Select a member</option>
+            <% if (teamdata.members && teamdata.members.length > 0) { %>
+                <% teamdata.members.forEach(item => { %>
+                    <option value="<%= item._id %>"><%= item.full_name %></option>
+                <% }) %>
+            <% } %>
+        </select>
+
+        <button id="submit">Submit</button>
+    </div>
+</div>
+
+<script>
+    const id = "<%= id %>";
+
+    document.getElementById('submit').addEventListener('click', async function () {
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const member = document.getElementById('member').value;
+
+        if (!title || !description || !member) {
+            alert("Please fill all fields.");
+            return;
+        }
+
+        const response = await fetch('/tasks/assigned', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title: title,
+                description: description,
+                member: member,
+                teamid: id
+            })
+        });
+        const data = await response.json();
+        if (data.ok) {
+            alert('tasks assigned successfully');
+            document.getElementById('title').value = ''
+            document.getElementById('description').value = ''
+            document.getElementById('member').value = ''
+        } else {
+            alert(data.error || "Something went wrong!");
+        }
+    });
+</script>
+</body>
+</html>
