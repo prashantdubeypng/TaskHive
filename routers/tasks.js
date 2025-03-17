@@ -1,15 +1,18 @@
 const express = require('express');
+require('dotenv').config()
 const router = express.Router();
 const Tasks = require('../models/Task')
 const User = require('../models/user')
 const Team = require('../models/Team')
 const res = require("express/lib/response");
 const nodemailer = require("nodemailer");
+const email = process.env.email;
+const password = process.env.password;
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'prashant2107pd@gmail.com',
-        pass: 'qxwomdutjnssfeqn' // Use environment variables in production
+        pass: 'qxwomdutjnssfeqn'  // Use environment variables in production
     }
 });
 router.post('/assigned',async (req,res)=>{
@@ -24,7 +27,7 @@ router.post('/assigned',async (req,res)=>{
        }
        const team = await Team.findById(teamid).populate('Admin');
        await transporter.sendMail({
-           from: '"TaskHive" <your-email@gmail.com>',
+           from: '"TaskHive" <TaskHive.Support@gmail.com>',
            to: memberdata.email,
            subject:`New Task Assigned: ${title}` ,
            html: `<p>Hello,${memberdata.full_name}</p>
@@ -111,7 +114,7 @@ router.put('/:id/end', async (req, res) => {
 
                 if (data.team && data.team.Admin && data.team.Admin.email) {
                     await transporter.sendMail({
-                        from: '"TaskHive" <prasant2107pd@gmail.com>',
+                        from: '"TaskHive" <TaskHive.Support@gmail.com>',
                         to: data.team.Admin.email,
                         subject: 'Task Completed Notification',
                         text: `The task "${data.title}" has been completed by the assigned user.

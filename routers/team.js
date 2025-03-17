@@ -119,5 +119,4 @@ router.delete('/removemember/:teamid/:memberid',async (req, res) => {
        return res.status(500).send('Server Error');
    }
 })
-
 module.exports = router;
