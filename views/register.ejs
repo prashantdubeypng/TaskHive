@@ -219,7 +219,7 @@
         }
 
         try {
-            const response = await fetch('http://localhost:3000/user/reg', {
+            const response = await fetch('/user/reg', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: name, email: email, password: password })
@@ -247,7 +247,7 @@ try{
     const email = document.getElementById('email').value;
     const otp = document.getElementById('otp').value;
     console.time('OTP Verification Function');
-    const response = await fetch('http://localhost:3000/user/verify', {
+    const response = await fetch('/user/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp})
