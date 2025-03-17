@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config()
 const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user')
@@ -14,8 +15,8 @@ const transporter = nodemailer.createTransport({
         pass: 'qxwomdutjnssfeqn' // Use environment variables in production
     }
 });
-
 router.get('/home', checkAuth('token') , async (req, res) => {
+    console.log('on homepage',req.user);
     try {
         const userId = req.user._id;
 
@@ -84,7 +85,7 @@ router.post('/AddMembers', async (req, res) => {
             try {
                 for (const user of users) {
                     const info = await transporter.sendMail({
-                        from: '"TaskHive" <your-email@gmail.com>',
+                        from: '"TaskHive" <TaskHive.Support@gmail.com>',
                         to: user.email,
                         subject: "You've been added to a team!",
                         text: `Hello ${user.full_name},\n\nYou have been added to the team "${checkadmin.name}" on TaskHive.\n\nBest Regards,\nTaskHive Team`
@@ -129,7 +130,6 @@ router.post('/addTask', async (req, res) => {
            }
            },
            {new:true})
-       console.log(newTask)//for debugging remove in the production
       return  res.json({ok:true,redirect:'/logic/home'})
    }catch (err){
        console.log('error in adding new task:',err);

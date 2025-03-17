@@ -372,6 +372,7 @@
                 <i class="fas fa-plus"></i> Add Task
             </a>
         </button>
+        <button onclick="chatroom('<%=user._id%>')">chatroom</button>
         <button class="nav-button" id="navCreateTeam">
             <i class="fas fa-users"></i> Create Team
         </button>
@@ -597,26 +598,43 @@ async function taskstarted(todoid){
             alert(error);
         }
     }
-async function tododelete(todoid){
-        try{
-            const response = await fetch(`/todo/tododelete/${todoid}`,{
-                method: 'DELETE',
-                headers:{
-                    "Content-Type": "application/json",
-                }
-            })
-            const data = await response.json();
-            if (data.ok) {
-                window.location.reload();
+async function tododelete(todoid) {
+    try {
+        const response = await fetch(`/todo/tododelete/${todoid}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
             }
-            if (data.error) {
-                alert('Task not Deleted');
-            }
-        }catch(error) {
-            alert(error);
+        })
+        const data = await response.json();
+        if (data.ok) {
+            window.location.reload();
         }
+        if (data.error) {
+            alert('Task not Deleted');
+        }
+    } catch (error) {
+        alert(error);
+    }
 }
-</script>
+    async function chatroom() {
+        try {
+            const response = await fetch(`/chatroom`, { method: 'GET' });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const htmlContent = await response.text();  // ✅ Read response as HTML
+            document.body.innerHTML = htmlContent;      // ✅ Load the chatroom page dynamically
+
+            console.log('Chatroom page rendered successfully');
+        } catch (error) {
+            console.error('Error loading chatroom:', error);
+            alert('Failed to load the chatroom page.');
+        }
+    }
+
+</script>
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHATROOM</title>
+</head>
+<body>
+<h1 style="font-weight: 700" > COMING SOON........</h1>
+<div class="container">
+    <div class="left-side" id="left-side">
+        <div class="teams-name">
+            <ul class="teams-list">
+                <% if (userdata.length > 0) { %>
+                    <% userdata.forEach(item => { %>
+                        <li class="team-member">
+                            <a href="/chatroom/<%= item._id %>"><%= item.name %></a>
+                        </li>
+                    <% }); %>
+                <% } else { %>
+                    <li>No teams available</li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    const userid = "<%= userdata._id %>"
+    console.log(userid)
+</script>
+</body>
+</html>

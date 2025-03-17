@@ -9,9 +9,10 @@ const todo = require('./routers/todo');
 const Team = require('./routers/team')
 const TeamModel = require('./models/Team')
 const tasks = require('./routers/tasks');
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/taskhive', {
+const User = require("./models/user");
+mongoose.connect('mongodb+srv://englishdocumentry1:KvDsgkWkjNBWPdml@cluster0.0i26y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
 })
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('MongoDB Connection Error:', err));
@@ -24,10 +25,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(cookiesparser());
 app.use('/user', user); // Public routes first
-app.use(checkAuth('token')); // Auth middleware applied after
 app.get('/', (req, res) => {
     return res.redirect('logic/home')
 })
+app.use(checkAuth('token')); // Auth middleware applied after
 app.use('/logic', logic)
 app.use('/todo',todo)
 app.use('/team',Team)
@@ -36,6 +37,23 @@ app.use('/tasks',tasks)
 app.get('/testing/addmember/:id', (req, res) => {
     const {id} = req.params;
     res.render('addmember', { id: id });
+})
+app.get('/chatroom', async (req, res) => {
+    try{
+        const id = req.user._id;
+        console.log("###",id);
+        const userdata = await TeamModel.find({
+            $or: [
+                { admin: id }, // If user is admin
+                { members: id } // If user is a team member
+            ]
+        }).select('name _id');
+        console.log('user data',userdata);
+        res.render('chatroom',{userdata});
+    }catch (error){
+        console.error('error in the server Error');
+        console.log(error);
+    }
 })
 app.get('/teasting/assigntask/:id', async (req, res) => {
     try {

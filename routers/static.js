@@ -1,15 +1,17 @@
 const express = require('express');
+require('dotenv').config()
 const router = express.Router();
 const User = require('../models/user')
-require('dotenv').config();
 const nodemailer = require('nodemailer');
 const genrateotp = require('../services/otpgenrater')
 const {setUser} = require('../services/auth')
+const email = process.env.email;
+const password = process.env.password;
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'prashant2107pd@gmail.com',
-        pass: 'qxwomdutjnssfeqn' // Use environment variables in production
+        pass: 'qxwomdutjnssfeqn'  // Use environment variables in production
     }
 });
 router.get('/',async (req,res)=>{
@@ -58,7 +60,7 @@ router.post('/reg',async (req,res)=>{
        });
        await newUser.save();
        await transporter.sendMail({
-           from: '"TaskHive" <your-email@gmail.com>',
+           from: '"TaskHive" <TaskHive.Support@gmail.com>',
            to: email,
            subject: 'Verify Your Email - TaskHive',
            html: `<p>Your OTP for verification is <b>${otp}</b>. It is valid for 10 minutes.</p>`
