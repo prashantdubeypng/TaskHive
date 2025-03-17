@@ -10,9 +10,9 @@ const Team = require('./routers/team')
 const TeamModel = require('./models/Team')
 const tasks = require('./routers/tasks');
 const User = require("./models/user");
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/taskhive', {
+mongoose.connect('mongodb+srv://englishdocumentry1:KvDsgkWkjNBWPdml@cluster0.0i26y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
 })
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('MongoDB Connection Error:', err));
