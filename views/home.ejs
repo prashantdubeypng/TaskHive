@@ -618,16 +618,8 @@ async function tododelete(todoid) {
     }
 }
     async function chatroom() {
-        try {
-            const response = await fetch(`/chatroom`, { method: 'GET' });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const htmlContent = await response.text();  // ✅ Read response as HTML
-            document.body.innerHTML = htmlContent;      // ✅ Load the chatroom page dynamically
-
+        try { // here i have deleted the custom loading of get api so the injection would not used and page load by good
+           window.location='/chatroom';
             console.log('Chatroom page rendered successfully');
         } catch (error) {
             console.error('Error loading chatroom:', error);
