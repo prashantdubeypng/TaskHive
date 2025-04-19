@@ -3,30 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHATROOM</title>
+    <title>TaskHive Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #2d3436;
+            --secondary-color: #0984e3;
+            --bg-color: #f5f6fa;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-color);
+        }
+
+        /* Teams Sidebar */
+        .teams-sidebar {
+            width: 250px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .teams-header {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .team-list {
+            list-style: none;
+        }
+
+        .team-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .team-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .team-item.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .team-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Chat Header */
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        /* Chat History */
+        .chat-history {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message.received {
+            flex-direction: row;
+        }
+
+        .message.sent {
+            flex-direction: row-reverse;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .message.sent .message-content {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Chat Input */
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .send-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background-color: var(--secondary-color);
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .send-button:hover {
+            background-color: #0873c4;
+        }
+    </style>
 </head>
 <body>
-<h1 style="font-weight: 700" > COMING SOON........</h1>
-<div class="container">
-    <div class="left-side" id="left-side">
-        <div class="teams-name">
-            <ul class="teams-list">
-                <% if (userdata.length > 0) { %>
-                    <% userdata.forEach(item => { %>
-                        <li class="team-member">
-                            <a href="/chatroom/<%= item._id %>"><%= item.name %></a>
-                        </li>
-                    <% }); %>
-                <% } else { %>
-                    <li>No teams available</li>
-                <% } %>
-            </ul>
+<!-- Teams Sidebar -->
+<div class="teams-sidebar">
+    <div class="teams-header">Your Teams</div>
+    <ul class="team-list">
+        <% if(userdata && userdata.length > 0) { %>
+            <% userdata.forEach(items => { %>
+                <li class="team-item">
+                    <div class="team-avatar">T1</div>
+                    <span><%= items.name %></span>
+                </li>
+            <% }); %>
+        <% } else { %>
+            <li>No teams available</li>
+        <% } %>
+    </ul>
+</div>
+
+
+<!-- Chat Container -->
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="chat-title">TEAM NAME</div>
+        <p class="online" id="online"></p>
+    </div>
+
+    <!-- Chat History -->
+    <div class="chat-history">
+        <div class="message received">
+            <div class="message-content">
+
+            </div>
+        </div>
+        <div class="message sent">
+            <div class="message-content">
+                <p id="message"></p>
+            </div>
         </div>
     </div>
+
+    <!-- Chat Input -->
+    <div class="chat-input">
+        <input type="text" class="message-input" id="message-to-send" placeholder="Type your message...">
+        <button class="send-button" id="send-message">Send</button>
+    </div>
 </div>
-<script>
-    const userid = "<%= userdata._id %>"
-    console.log(userid)
-</script>
+<script src="/socket.io/socket.io.js"></script>
+<!--<script src="main.js"></script>-->
+
 </body>
 </html>
