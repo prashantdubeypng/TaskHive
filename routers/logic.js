@@ -15,6 +15,25 @@ const transporter = nodemailer.createTransport({
         pass: 'qxwomdutjnssfeqn' // Use environment variables in production
     }
 });
+// in this we take a user unique id from the cookies , a token which we have given him , in that payload it has user id
+// after getting that id , we search in the db to find the data about the user like name , team name who's part is it
+// completed tasks and rest task , name , email
+router.get('/profile',async (req,res)=>{
+const id = req.user._id;
+try{
+    const data = await User.findById(id);
+    // console.log(data);
+    // I have to get all the tasks that are assigned to the user
+    const teams = await Team.find({members:id})
+    // console.log(teams)
+    const tasks = await Task.find({AssignedTo:id}).populate('team',"name")
+     console.log(tasks)
+    res.render('profile',{data,teams , tasks});
+}catch (e) {
+console.log(e);
+console.log("Error getting user");
+}
+})
 router.get('/home', checkAuth('token') , async (req, res) => {
     console.log('on homepage',req.user);
     try {
@@ -32,7 +51,7 @@ router.get('/home', checkAuth('token') , async (req, res) => {
         // Get user's To-Do List
         const todos = await TODO.find({ owner: userId }).select('title status description date');
 // console.log(todo.length)
-        console.log(todos)
+//         console.log(todos)
         res.render('home', {
             user: req.user,
             Teams: teams,

@@ -36,9 +36,19 @@ router.get('/:teamid/:userid', async (req, res) => {
             return res.redirect('/user/');
         }
         const team = await Team.findById(teamid).populate('Admin','_id')
+        if(team.Admin._id.toString()===req.user._id.toString()&&team.Admin._id!==userid){
+            try{
+                const data = await User.findById(userid);
+                const teams = await Team.findById(teamid)
+                    console.log(teams);
+                const tasks = await Task.find({AssignedTo:userid , team:teamid}).populate('team',"name")
+                return res.render('teamprofile' , {data, tasks , teams} )
+            }catch(err){}
+        }
         if (team.Admin._id.toString()!==req.user._id.toString()&&(req.user._id.toString()!==userid)){
             return res.status(403).json({error:'Access Denied'})
         }
+
         const Tasks = await Task.find({AssignedTo:userid,team:teamid})
 res.render('taskassined',{Tasks:Tasks,userid:userid})
     }catch (e) {
