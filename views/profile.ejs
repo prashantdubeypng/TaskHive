@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f2f5f9;
+            padding: 2rem;
+            color: #333;
+        }
+
+        a {
+            color: black;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        a:hover {
+            color: #6c5ce7;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6c5ce7;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-button {
+            background-color: #f0f2f5;
+            color: #6c5ce7;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-button:hover {
+            background-color: #6c5ce7;
+            color: white;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .sidebar {
+            width: 300px;
+            border-right: 1px solid #eee;
+            padding-right: 2rem;
+        }
+
+        .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-section p,
+        .employee-details p {
+            margin-bottom: 0.5rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .teams_name {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 1rem;
+        }
+
+        .teams_name a {
+            width: 150px;
+            border: 3px solid #6c5ce7;
+            padding: 8px 16px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            color: #6c5ce7;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .teams_name a:hover {
+            background-color: #6c5ce7;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .content {
+            flex: 1;
+        }
+        .tabs div {
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .tabs div:hover {
+            background-color: #e0e0e0;
+        }
+
+        .add-employee {
+            margin-left: auto;
+            background-color: #6c5ce7;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .add-employee:hover {
+            background-color: #5a4cd1;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            border-left: 5px solid #6c5ce7;
+            padding-left: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-item, .compensation-item {
+            background: #fafafa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .view-all {
+            color: #6c5ce7;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .user-menu {
+            position: relative;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 150px;
+            z-index: 999;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+
+        .dropdown-item a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+
+
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div>
+        <a href="/logic/home" class="nav-brand">TaskHive</a>
+
+    </div>
+    <div class="nav-items">
+        <% if( data ) { %>
+        <button class="nav-button" id="navAddTask">
+            <a href="/logic/todopage/<%=data._id %>" class="nav-button">
+                <i class="fas fa-plus"></i> Add Task
+            </a>
+        </button>
+        <button onclick="chatroom('<%=data._id%>')">chatroom</button>
+        <button class="nav-button" id="navCreateTeam">
+            <i class="fas fa-users"></i> Create Team
+        </button>
+        <a href="/logic/profile" class="nav-button">Profile</a>
+        <div class="user-menu">
+            <button class="nav-button" id="userMenuBtn">
+                <i class="fas fa-user"></i> <%=data.full_name%> ▼
+            </button>
+            <div class="user-dropdown" id="userDropdown">
+                <div class="dropdown-item">
+                    <a href="/logic/logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        <% if(!data) { %>
+            <a href="/user" class="nav-button">Login</a>
+            <a href="/user/res" class="nav-button">Register</a>
+        <% } %>
+    </div>
+</nav>
+<div class="container" style="margin-top: 150px">
+    <div class="sidebar">
+        <div class="name"><%=data.full_name%><br><span style="font-size: 0.9rem; color: #888;">#ERD246534</span></div>
+        <div class="info-section">
+           <%if(data.phone){%>
+                <p><strong>Phone:</strong> <%=data.phone%></p>
+          <% }%>
+            <p><strong>Email:</strong> <%=data.email%></p>
+        </div>
+        <div class="employee-details">
+            <%if(data.cc){%>
+                <p><strong>Current Company:</strong> <%=data.cc%></p>
+           <% }%>
+           <%if(data.we){%>
+                <p><strong>Working Experience</strong> <%=data.we%></p>
+          <% }%>
+            <%if (data.ti){%>
+                <p><strong>Title:</strong> <%=data.ti%></p>
+           <% }%>
+<h1 class="title">Teams</h1>
+           <div class="teams_name">
+               <% if (teams.length>0){%>
+               <%teams.forEach(team=>{%>
+
+                   <a href= "/team/<%= team._id %>" > <%=team.name%></a>
+
+               <% })%>
+               <% }%>
+           </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="job-info">
+            <div class="section-title">Tasks Information</div>
+            <table>
+                <thead>
+                <tr><th>Task</th><th>Assigned</th><th>Completed</th><th>Total Duration</th><th>Status</th><th>Team</th></tr>
+                </thead>
+                <%if (tasks.length>0){%>
+                <%tasks.forEach(tasks=>{%>
+                <tbody>
+                <tr>
+                    <td><%= tasks.title %></td>
+                    <td><%= tasks.createdAt %></td>
+                    <td><%= tasks.end %></td>
+                    <%
+                        const durationMs = tasks.end - tasks.started;
+                        const totalSeconds = Math.floor(durationMs / 1000);
+                        const hours = Math.floor(totalSeconds / 3600);
+                        const minutes = Math.floor((totalSeconds % 3600) / 60);
+                        const seconds = totalSeconds % 60;
+                    %>
+                    <td><%= `${hours}hour:${minutes}min:${seconds}sec` %></td>
+                    <td><%= tasks.status %></td><td><%=tasks.team.name%></td>
+                </tr>
+
+                </tbody>
+                <% })%>
+               <% }%>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    async function chatroom() {
+        try { // here i have deleted the custom loading of get api so the injection would not used and page load by good
+            window.location='/chatroom';
+            console.log('Chatroom page rendered successfully');
+        } catch (error) {
+            console.error('Error loading chatroom:', error);
+            alert('Failed to load the chatroom page.');
+        }
+    }
+    const userMenuBtn = document.getElementById("userMenuBtn");
+    const userDropdown = document.getElementById("userDropdown");
+
+    userMenuBtn.addEventListener("click", () => {
+        userDropdown.style.display =
+            userDropdown.style.display === "block" ? "none" : "block";
+    });
+
+    // Optional: close dropdown when clicking outside
+    window.addEventListener("click", function(e) {
+        if (!userMenuBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+            userDropdown.style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>

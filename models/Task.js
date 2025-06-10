@@ -22,10 +22,12 @@ const TaskSchema = new Schema({
         ref:'Team'
     },
     started:{
-        type:Date
+        type:Date,
+        default: null
     },
     end:{
-        type: Date
+        type: Date,
+        default: null
     }
 },{timestamps:true})
 const Task =  model('Task', TaskSchema);
