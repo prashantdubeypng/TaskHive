@@ -36,7 +36,7 @@ router.get('/:teamid/:userid', async (req, res) => {
             return res.redirect('/user/');
         }
         const team = await Team.findById(teamid).populate('Admin','_id')
-        if(team.Admin._id.toString()===req.user._id.toString()&&team.Admin._id!==userid){
+        if(team.Admin._id.toString()===req.user._id.toString()&&team.Admin._id.toString()!==userid){
             try{
                 const data = await User.findById(userid);
                 const teams = await Team.findById(teamid)
