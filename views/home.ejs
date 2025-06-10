@@ -617,8 +617,8 @@ async function tododelete(todoid) {
     }
 }
     async function chatroom() {
-        try { // here i have deleted the custom loading of get api so the injection would not used and page load by good
-           window.location='/chatroom';
+        try {
+             window.location='/chatroom';
             console.log('Chatroom page rendered successfully');
         } catch (error) {
             console.error('Error loading chatroom:', error);
