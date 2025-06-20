@@ -11,8 +11,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'prashant2107pd@gmail.com',
-        pass: 'qxwomdutjnssfeqn' // Use environment variables in production
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD // Use environment variables in production
     }
 });
 // in this we take a user unique id from the cookies , a token which we have given him , in that payload it has user id
@@ -33,6 +33,9 @@ try{
 console.log(e);
 console.log("Error getting user");
 }
+})
+router.get('/forget',async (req,res)=>{
+    res.render('forget');
 })
 router.get('/home', checkAuth('token') , async (req, res) => {
     console.log('on homepage',req.user);

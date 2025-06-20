@@ -10,7 +10,7 @@ const Team = require('./routers/team')
 const TeamModel = require('./models/Team')
 const tasks = require('./routers/tasks');
 const User = require("./models/user");
-mongoose.connect('mongodb+srv://englishdocumentry1:KvDsgkWkjNBWPdml@cluster0.0i26y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGO, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -19,7 +19,7 @@ mongoose.connect('mongodb+srv://englishdocumentry1:KvDsgkWkjNBWPdml@cluster0.0i2
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT||8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
