@@ -6,7 +6,7 @@ const User = require('../models/user')
 const Task = require('../models/Task')
 const Team = require('../models/Team')
 const TODO = require('../models/Task_Todo')
-const checkAuth = require('../middleware/authentication');
+const { requireAuth } = require('../middleware/authentication');
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -37,24 +37,25 @@ console.log("Error getting user");
 router.get('/forget',async (req,res)=>{
     res.render('forget');
 })
-router.get('/home', checkAuth('token') , async (req, res) => {
-    console.log('on homepage',req.user);
+router.get('/home', requireAuth, async (req, res) => {
+    console.log('on homepage', req.user);
+
     try {
         const userId = req.user._id;
 
         // Get teams where the user is a member
         const teams = await Team.find({ members: userId })
-            .populate("members", "full_name , email")
+            .populate("members", "full_name email")
             .populate("Admin", "full_name");
-// console.log(teams)
+
         // Get tasks assigned to the user
         const tasks = await Task.find({ AssignedTo: userId })
-            .populate("team", "name ,status");
-// console.log(tasks)
+            .populate("team", "name status");
+
         // Get user's To-Do List
-        const todos = await TODO.find({ owner: userId }).select('title status description date');
-// console.log(todo.length)
-//         console.log(todos)
+        const todos = await TODO.find({ owner: userId })
+            .select('title status description date');
+
         res.render('home', {
             user: req.user,
             Teams: teams,
@@ -231,6 +232,9 @@ router.get('/todopage/:id', async (req, res) => {
         console.error("Error fetching TODO page:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
+});
+router.get('/guest', async (req, res) => {
+    res.render('guest');
 });
 
 module.exports = router;

@@ -1,22 +1,28 @@
 const { getUser } = require('../services/auth');
 
-function checkAuth(tokenkey) {
+// ✅ Attach user if token exists
+function checkAuth(tokenKey) {
     return (req, res, next) => {
-        const checktoken = req.cookies[tokenkey]; // Get token from cookies
-
-        if (!checktoken) {
-
-            return res.redirect('/user/'); // No token, continue without authentication
+        const token = req.cookies[tokenKey];
+        if (token) {
+            try {
+                const payload = getUser(token); // Decode token
+                req.user = payload;
+            } catch (err) {
+                console.error('Invalid token:', err);
+                res.clearCookie(tokenKey);
+            }
         }
-
-        try {
-            const payload = getUser(checktoken); // Decode token
-            req.user = payload; // Attach user info to req
-        } catch (e) {
-            console.error('Authentication Error:', e); // Log error for debugging
-        }
-
-        next(); // Always call next(), even if token verification fails
+        next();
     };
 }
-module.exports = checkAuth;
+
+// ✅ Block guests for protected routes
+function requireAuth(req, res, next) {
+    if (!req.user) {
+        return res.redirect('/logic/guest'); // Redirect guest to guest page
+    }
+    next();
+}
+
+module.exports = { checkAuth, requireAuth };

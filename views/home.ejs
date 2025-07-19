@@ -4,127 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskHive - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        nav {
-            background-color: #007bff;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-button {
-            background-color: white;
-            color: #007bff;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .nav-button:hover {
-            background-color: #e6e6e6;
-        }
-        /* Overlay for the Create Team Form */
-        #team-overlay {
-            display: none; /* Initially hidden */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .hidden {
-            display: none !important;
-        }
-        #team-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            width: 300px;
-        }
-        .submit-btn, .done-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .done-btn {
-            background-color: red;
-        }
-        /* Form Container */
-        #team-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 350px;
-            text-align: center;
-        }
-
-        /* Input Fields */
-        #team-container input {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        /* Buttons */
-        .open-btn {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .add-member, .submit-btn, .done-btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .add-member {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .submit-btn {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .done-btn {
-            background-color: #dc3545;
-            color: white;
-        }
-
-
-
+        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
         body {
@@ -132,150 +20,7 @@
             min-height: 100vh;
         }
 
-        .container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 2rem;
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Teams Section */
-        .teams-section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            animation: slideInLeft 0.5s ease;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        h2 {
-            color: #2d3436;
-            font-size: 1.5rem;
-        }
-
-        .btn {
-            padding: 0.8rem 1.2rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background: #6c5ce7;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #5b4bc4;
-            transform: translateY(-2px);
-        }
-
-        .team-list {
-            list-style: none;
-        }
-
-        /* Todo Section */
-        .todo-section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            animation: slideInRight 0.5s ease;
-        }
-
-        .todo-list {
-            margin-top: 1rem;
-        }
-
-        .todo-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            background: #f8f9fa;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .todo-item input[type="checkbox"] {
-            margin-right: 1rem;
-            transform: scale(1.2);
-        }
-
-        .floating-buttons {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .fab {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            background: #6c5ce7;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .fab:hover {
-            background: #5b4bc4;
-            transform: scale(1.1) rotate(90deg);
-        }
-
-        @keyframes slideInLeft {
-            from { transform: translateX(-50px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(50px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            animation: slideInUp 0.3s ease;
-        }
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -298,7 +43,7 @@
 
         .nav-items {
             display: flex;
-            gap: 2rem;
+            gap: 1rem;
             align-items: center;
         }
 
@@ -306,12 +51,14 @@
             padding: 0.5rem 1rem;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
             background: #f0f2f5;
             border: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #333;
         }
 
         .nav-button:hover {
@@ -330,21 +77,24 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            padding: 1rem;
+            padding: 0.5rem;
             min-width: 180px;
             display: none;
         }
 
         .user-dropdown.active {
             display: block;
-            animation: slideInDown 0.3s ease;
         }
 
         .dropdown-item {
             padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             cursor: pointer;
+            text-decoration: none;
+            color: #333;
             border-radius: 6px;
-            transition: background 0.3s ease;
         }
 
         .dropdown-item:hover {
@@ -352,50 +102,203 @@
         }
 
         .container {
-            margin-top: 80px; /* Add space for fixed navbar */
+            margin-top: 90px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        @keyframes slideInDown {
-            from { transform: translateY(-10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        /* Section Cards */
+        .teams-section, .todo-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .team-list, .todo-list ul {
+            list-style: none;
+        }
+
+        .todo-item, .team-list li {
+            margin-bottom: 0.8rem;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5b4bc4;
+        }
+
+        /* Floating Buttons */
+        .floating-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .fab {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #6c5ce7;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .fab:hover {
+            background: #5b4bc4;
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        /* Create Team Overlay */
+        #team-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #team-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        #team-container input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .submit-btn, .done-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .done-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
+
 <nav class="navbar">
-    <div class="nav-brand">TimeTide</div>
+    <div class="nav-brand">TaskHive</div>
     <div class="nav-items">
-        <% if( user ) { %>
-        <button class="nav-button" id="navAddTask">
-            <a href="/logic/todopage/<%=user._id %>" class="nav-button">
+        <% if(user) { %>
+            <a href="/logic/todopage/<%= user._id %>" class="nav-button">
                 <i class="fas fa-plus"></i> Add Task
             </a>
-        </button>
-        <button onclick="chatroom('<%=user._id%>')">chatroom</button>
-        <button class="nav-button" id="navCreateTeam">
-            <i class="fas fa-users"></i> Create Team
-        </button>
-        <a href="/logic/profile" class="nav-button">Profile</a>
-
-        <div class="user-menu">
-            <button class="nav-button" id="userMenuBtn">
-                <i class="fas fa-user"></i> <%=user.name%> ▼
+            <button onclick="chatroom('<%= user._id %>')" class="nav-button">Chatroom</button>
+            <button class="nav-button" id="navCreateTeam">
+                <i class="fas fa-users"></i> Create Team
             </button>
-            <div class="user-dropdown" id="userDropdown">
-                <div class="dropdown-item" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt" style="color: black"><a href="/logic/logout" class="nav-button" style="background:black"></a>Logout</i>
+            <a href="/logic/profile" class="nav-button">Profile</a>
+
+            <div class="user-menu">
+                <button class="nav-button" id="userMenuBtn" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i> <%= user.name %> ▼
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="/logic/logout" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </div>
             </div>
-        </div>
-        <% } %>
-        <% if(!user) { %>
+        <% } else { %>
             <a href="/user" class="nav-button">Login</a>
             <a href="/user/res" class="nav-button">Register</a>
         <% } %>
     </div>
 </nav>
-<!--above part is good-->
+
 <div class="container">
     <!-- Teams Section -->
     <section class="teams-section">
@@ -403,24 +306,19 @@
             <h2>Teams</h2>
         </div>
         <ul class="team-list" id="teamList">
-            <% if (Teams.length>0){%>
-            <%Teams.forEach(team=>{%>
-                <li>
-                    <a href= "/team/<%= team._id %>"> <%=team.name%></a>
-                </li>
-                <!--  // here I am making the team name clickable so when the memebres of that click on the group name ,&ndash;&gt;-->
-                <!--&lt;!&ndash;         //   they see there task and the admin see the all the tasks assigned and &ndash;&gt;-->
-                <!--&lt;!&ndash;         //   memebers of that team, also completed task and pending task.&ndash;&gt;-->
-            <% })%>
-            <% }%>
-            <% if (Teams.length===0){%>
-                <li>
-                    No teams found. Create one
-                </li>
-            <% }%>
+            <% if (Teams.length > 0) { %>
+                <% Teams.forEach(team => { %>
+                    <li>
+                        <a href="/team/<%= team._id %>"><%= team.name %></a>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <li>No teams found. Create one</li>
+            <% } %>
         </ul>
     </section>
-<!--    TODO SECTION-->
+
+    <!-- Todo Section -->
     <section class="todo-section">
         <div class="section-header">
             <h2>Todo List</h2>
@@ -429,19 +327,17 @@
             <% if (TodoList.length > 0) { %>
                 <ul>
                     <% TodoList.forEach(todo => { %>
-                        <li >
-                            <label for="<%=todo._id%>" onclick="fetchTodoDetails('<%= todo._id %>')">
+                        <li class="todo-item">
+                            <label for="<%= todo._id %>" onclick="fetchTodoDetails('<%= todo._id %>')">
                                 <span><%= todo.title %></span>
                             </label>
                             <% if(todo.status === 'pending') { %>
-                                <button id="startBtn" class="btn btn-primary" onclick="taskstarted('<%=todo._id%>')">START</button>
-                            <% } %>
-                            <% if(todo.status === 'in progress') { %>
-                                <button id="endBtn" class="btn btn-primary" onclick="todoend('<%=todo._id%>')">END</button>
-                            <% } %>
-                            <% if(todo.status === 'completed') { %>
+                                <button class="btn btn-primary" onclick="taskstarted('<%= todo._id %>')">START</button>
+                            <% } else if(todo.status === 'in progress') { %>
+                                <button class="btn btn-primary" onclick="todoend('<%= todo._id %>')">END</button>
+                            <% } else if(todo.status === 'completed') { %>
                                 <span>DONE</span>
-                            <button onclick="tododelete('<%=todo._id%>')">delete</button>
+                                <button onclick="tododelete('<%= todo._id %>')" class="btn">Delete</button>
                             <% } %>
                         </li>
                     <% }) %>
@@ -451,30 +347,31 @@
             <% } %>
         </div>
     </section>
+</div>
 
-    <!-- Floating Action Buttons -->
-        <div class="floating-buttons">
-            <button class="fab" id="addTaskBtn">
-                <i class="fas fa-plus"></i>
-            </button>
-            <button class="fab" id="assignTaskBtn">
-                <i class="fas fa-user-friends"></i>
-            </button>
-        </div>
+<!-- Floating Buttons -->
+<div class="floating-buttons">
+    <button class="fab" id="addTaskBtn">
+        <i class="fas fa-plus"></i>
+    </button>
+    <button class="fab" id="assignTaskBtn">
+        <i class="fas fa-user-friends"></i>
+    </button>
+</div>
 
-        <!-- Modal -->
-        <div class="modal" id="modal">
-            <div class="modal-content">
-                <h3>Add New Task</h3>
-                <form id="taskForm" class="form-group">
-                    <input type="text" placeholder="Task title" required>
-                    <textarea placeholder="Description" rows="3"></textarea>
-                    <button type="submit" class="btn btn-primary">Add Task</button>
-                </form>
-            </div>
-        </div>
+<!-- Modal for Adding Task -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3>Add New Task</h3>
+        <form id="taskForm">
+            <input type="text" placeholder="Task title" required>
+            <textarea placeholder="Description" rows="3"></textarea>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+    </div>
+</div>
 
-<!-- Team Creation Form Overlay -->
+<!-- Team Creation Form -->
 <div id="team-overlay" class="hidden">
     <div id="team-container">
         <h2>Create Team</h2>
@@ -483,71 +380,75 @@
         <button id="closeTeamForm" class="done-btn">Close</button>
     </div>
 </div>
-</div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
         const createTeamBtn = document.getElementById("navCreateTeam");
         const teamOverlay = document.getElementById("team-overlay");
         const closeBtn = document.getElementById("closeTeamForm");
-        const userMenuBtn = document.getElementById('userMenuBtn');
-        const userDropdown = document.getElementById('userDropdown');
+        const userMenuBtn = document.getElementById("userMenuBtn");
+        const userDropdown = document.getElementById("userDropdown");
+        const addTeamBtn = document.getElementById("addTEAMForm");
 
-        // Open form when clicking "Create Team"
-        createTeamBtn.addEventListener("click", function () {
+        // Open Create Team Form
+        createTeamBtn.addEventListener("click", (e) => {
+            e.preventDefault();
             teamOverlay.classList.remove("hidden");
         });
 
-        // Close form when clicking "Close"
-        closeBtn.addEventListener("click", function () {
+        // Close Create Team Form
+        closeBtn.addEventListener("click", () => {
             teamOverlay.classList.add("hidden");
         });
-        userMenuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            userDropdown.classList.toggle('active');
-        });
-        document.addEventListener('click', () => {
-            userDropdown.classList.remove('active');
-        });
-        // Connect nav buttons to existing functionality
-        // Get correct form container reference
-        const formContainer = document.getElementById('formContainer');
 
-        // Corrected create team button handler
-        document.getElementById('navCreateTeam').addEventListener('click', (e) => {
-            e.preventDefault();
-            formContainer.style.display = 'flex'; // Correct variable name
-        });
-        // Close when clicking outside the form
-        teamOverlay.addEventListener("click", function (event) {
+        // Close when clicking outside
+        teamOverlay.addEventListener("click", (event) => {
             if (event.target === teamOverlay) {
                 teamOverlay.classList.add("hidden");
             }
         });
-    });
-    document.getElementById('addTEAMForm').addEventListener('click', async (event) => {
-        const teamName = document.getElementById('teamName').value;
-        try {
-            const response = await fetch("/logic/CreateTeam", {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ teamName }),
-            });
 
-            const data = await response.json();
-            if (data.ok) {
-                alert('Team created');
-               window.location = '/logic/home' // Refresh to show new team
+        // Toggle user dropdown
+        userMenuBtn?.addEventListener("click", (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle("active");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest(".user-menu")) {
+                userDropdown.classList.remove("active");
             }
-            if (data.error) {
-                alert(data.error);
+        });
+
+        // Create Team API
+        addTeamBtn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const teamName = document.getElementById("teamName").value.trim();
+            if (!teamName) {
+                alert("Please enter a team name");
+                return;
             }
-        } catch (error) {
-            console.error("Error:", error);
-            alert('Failed to create team');
-        }
+            try {
+                const response = await fetch("/logic/CreateTeam", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ teamName }),
+                });
+                const data = await response.json();
+                if (data.ok) {
+                    alert("Team created successfully");
+                    window.location.href = "/logic/home";
+                } else {
+                    alert(data.error || "Failed to create team");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to create team");
+            }
+        });
     });
+
+    // Task Functions
     async function fetchTodoDetails(todoId) {
         try {
             const response = await fetch(`/todo/${todoId}`);
@@ -557,68 +458,35 @@
             console.error("Error fetching task details:", error);
         }
     }
-async function taskstarted(todoid){
-        try{
-            const response = await fetch(`/todo/todoupdate/${todoid}`,{
-                method: 'PUT',
-                headers:{
-                    "Content-Type": "application/json",
-                }
-            })
+
+    async function taskstarted(todoId) {
+        await updateTask(`/todo/todoupdate/${todoId}`);
+    }
+
+    async function todoend(todoId) {
+        await updateTask(`/todo/todoend/${todoId}`);
+    }
+
+    async function tododelete(todoId) {
+        await updateTask(`/todo/tododelete/${todoId}`, "DELETE");
+    }
+
+    async function updateTask(url, method = "PUT") {
+        try {
+            const response = await fetch(url, { method, headers: { "Content-Type": "application/json" } });
             const data = await response.json();
             if (data.ok) {
                 window.location.reload();
+            } else {
+                alert("Operation failed");
             }
-            if (data.error) {
-                alert('Task Status updated Failed');
-                console.log(data.error);
-            }
-        }catch (error) {
-            alert(error);
-            console.error(error);
+        } catch (error) {
+            console.error("Error updating task:", error);
         }
     }
-    async function todoend(todoid){
-        try{
-            const response = await fetch(`/todo/todoend/${todoid}`,{
-                method:'PUT',
-                headers:{
-                    "Content-Type": "application/json",
-                },
-            })
-            const data = await response.json();
-            if (data.ok) {
-                window.location.reload();
-            }
-            if (data.error) {
-                alert('Task Status updated Failed');
-            }
-        }catch (error) {
-            alert(error);
-        }
-    }
-async function tododelete(todoid) {
-    try {
-        const response = await fetch(`/todo/tododelete/${todoid}`, {
-            method: 'DELETE',
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        const data = await response.json();
-        if (data.ok) {
-            window.location.reload();
-        }
-        if (data.error) {
-            alert('Task not Deleted');
-        }
-    } catch (error) {
-        alert(error);
-    }
-}
     async function chatroom() {
         try {
-             window.location='/chatroom';
+            window.location='/chatroom';
             console.log('Chatroom page rendered successfully');
         } catch (error) {
             console.error('Error loading chatroom:', error);
