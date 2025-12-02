@@ -55,8 +55,7 @@ Ensure you have the following installed:
 
    ```env
    PORT=8000
-   MONGO=mongodb://localhost:27017/taskhive   # Replace with your MongoDB connection string
-   # Add any secret keys required for authentication here (e.g., JWT_SECRET)
+   MONGO=mongodb://localhost:27017/taskhive   
    ```
 
 ### Running the Application
